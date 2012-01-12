@@ -1,0 +1,6 @@
+Usage example:
+
+require 'phantom_client'
+
+client = PhantomJSProxy::PhantomJSClient.new([{:addr => "127.0.0.1", :port => 5000}])
+dom = client.get("http://foo.de/", {:imageOnly => true, :withIframes => true})
