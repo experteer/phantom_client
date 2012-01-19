@@ -1,0 +1,24 @@
+== Phantom Client
+Phantom Client is a clientlibrary to Phantom Proxy 
+(see https://github.com/experteer/phantom_proxy).
+It's a thin layer around Net::HTTP to fetch a page
+through the Phantom Proxy with specific options.
+
+== Installation
+ rake build
+ rake install
+
+== Usage
+
+Usage example:
+
+ require 'phantom_client'
+
+ client = PhantomJSProxy::PhantomJSClient.new([{:addr => "127.0.0.1", :port => 5000}])
+ dom = client.get("http://foo.de/", {:imageOnly => true, :withIframes => true})
+
+== TODO
+* nicer API
+* gemify
+* namespace cleanup
+
