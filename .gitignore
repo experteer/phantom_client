@@ -1,2 +1,5 @@
 phantom_client-*.gem
 .rvmrc
+
+#ide
+.redcar
