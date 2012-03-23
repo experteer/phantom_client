@@ -1,4 +1,4 @@
 class DummyConnection < PhantomJSProxy::PhantomJSClientConnection
-	def doRequest(proxy, uri, req)
+	def do_request(proxy, uri, req)
 	end
 end

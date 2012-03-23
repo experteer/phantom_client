@@ -1,5 +1,5 @@
-require 'lib/phantom_client_connection'
-require 'lib/phantom_client'
+require 'lib/phantom_client/phantom_client_connection'
+require 'lib/phantom_client/phantom_client'
 
 require 'DummyConnection'
 describe PhantomJSProxy::PhantomJSClient do

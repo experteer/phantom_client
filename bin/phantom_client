@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'phantom_client'
+
+url = nil
+proxy_list = []
+
+ARGV.each{ |arg|
+  if url == nil
+    url = arg
+  else
+    newE = {}
+    newE[:addr] = arg.split(':')[0]
+    newE[:port] = arg.split(':')[1]
+    proxy_list.push newE
+  end
+}
+
+if url == nil
+  return
+end
+
+client = PhantomJSProxy::PhantomJSClient.new(proxy_list)
+puts client.get(url, {:imageOnly => false, :withIframes => true})
