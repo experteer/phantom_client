@@ -28,7 +28,7 @@ module PhantomJSProxy
 			end
 			
 			if options && options['withIframes']
-				req['HTTP_GET_PAGE_WITH_IFRAMES'] = options['withIframes']
+				req['Get-Page-With-IFrames'] = options['withIframes']
 				puts "Do fetch iframes"
 			end
 			#::Proxy(@proxy_addr, @proxy_port)
