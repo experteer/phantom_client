@@ -7,7 +7,7 @@ module PhantomJSProxy
 				res = Net::HTTP::Proxy(proxy[:addr], proxy[:port]).start(url.host, url.port) {|http|
 					http.request(req)
 				}
-				return res.body
+				return res
 		end
 	end
 end

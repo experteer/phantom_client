@@ -14,6 +14,10 @@ module PhantomJSProxy
 			@connection = con
 		end
 		
+		def get_body(addr, options=nil)
+		  get(addr, options).body
+		end
+		
 		def get(addr, options=nil)			
 			url = URI.parse(addr)
 			req = Net::HTTP::Get.new(url.path)

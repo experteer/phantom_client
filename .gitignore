@@ -3,6 +3,7 @@ phantom_client-*.gem
 
 #ide
 .redcar
+.project
 
 #doc
 doc/*
