@@ -2,6 +2,10 @@ require 'net/http'
 require 'uri'
 
 module PhantomJSProxy
+  class DummyResponse
+    attr_accessor :body
+    attr_accessor :code
+  end
 	class PhantomJSClient
 	
 		attr_accessor :proxy_addr
@@ -58,7 +62,10 @@ module PhantomJSProxy
           @connection.do_request(element, url, req)
         rescue
           if count == 0
-            return "Could not connect to proxy"
+            resp = DummyResponse.new()
+            resp.code = 500
+            resp.body ="Could not connect to proxy"
+            return resp
           end
           do_get(url, req, count-1)
         end
