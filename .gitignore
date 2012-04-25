@@ -7,3 +7,5 @@ phantom_client-*.gem
 
 #doc
 doc/*
+
+tmp/
