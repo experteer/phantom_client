@@ -5,21 +5,25 @@ require 'phantom_client'
 
 url = nil
 proxy_list = []
-
+last_arg = nil
+hmac_key = nil
 ARGV.each{ |arg|
   if url == nil
     url = arg
+  elsif /-hmac/.match(last_arg)
+  	hmac_key = arg
   else
     newE = {}
     newE[:addr] = arg.split(':')[0]
     newE[:port] = arg.split(':')[1]
     proxy_list.push newE
   end
+  last_arg = arg
 }
 
 if url == nil
   return
 end
 
-client = PhantomJSProxy::PhantomJSClient.new(proxy_list)
+client = PhantomJSProxy::PhantomJSClient.new(proxy_list, PhantomJSProxy::PhantomJSClientConnection.new, hmac_key)
 puts client.get_body(url, {:imageOnly => false, :withIframes => true})

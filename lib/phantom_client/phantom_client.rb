@@ -13,10 +13,15 @@ module PhantomJSProxy
 		attr_accessor :proxy_port
 		attr_accessor :proxy_list
 		attr_accessor :connection
+    attr_accessor :hmac
+    attr_accessor :hmac_activated
 		
-		def initialize(addr_list=[], con = PhantomJSClientConnection.new)
+		def initialize(addr_list=[], con = PhantomJSClientConnection.new, key=nil)
 			@proxy_list = addr_list
 			@connection = con
+			@hmac_activated = key ? true : false
+			@hmac = HMAC::MD5.new key
+			puts "Using #{key} as HMAC key"
 		end
 		
 		def get_body(addr, options=nil)
@@ -39,6 +44,13 @@ module PhantomJSProxy
 			if options && options['withIframes']
 				req['Get-Page-With-IFrames'] = options['withIframes']
 				puts "Do fetch iframes"
+			end
+			
+			if hmac_activated
+			  t = Time.now+121
+			  req['Hmac-Key'] = hmac.update(addr+t.to_s).hexdigest
+			  req['Hmac-Time'] = t
+        puts "Encode: #{addr} to #{req['Hmac-Key']}"
 			end
 			#::Proxy(@proxy_addr, @proxy_port)
 			
