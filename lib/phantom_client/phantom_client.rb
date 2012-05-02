@@ -1,5 +1,6 @@
 require 'net/http'
 require 'uri'
+require 'hmac-md5'
 
 module PhantomJSProxy
   class DummyResponse

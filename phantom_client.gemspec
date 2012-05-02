@@ -14,4 +14,5 @@ Gem::Specification.new do |s|
                       'test/**/*'].to_a
   s.homepage    = 'http://experteer.com'
   s.executables = ['phantom_client']
+  s.add_dependency('ruby-hmac', '>= 0.4.0')
 end
