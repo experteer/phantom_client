@@ -47,7 +47,7 @@ module PhantomJSProxy
 			end
 			
 			if hmac_activated
-			  t = Time.now+121
+			  t = Time.now
 			  req['Hmac-Key'] = hmac.update(addr+t.to_s).hexdigest
 			  req['Hmac-Time'] = t
         puts "Encode: #{addr} to #{req['Hmac-Key']}"
