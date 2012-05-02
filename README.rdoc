@@ -15,11 +15,14 @@ Usage example:
  require 'phantom_client'
 
  client = PhantomJSProxy::PhantomJSClient.new([{:addr => "127.0.0.1", :port => 5000}])
- dom = client.get("http://foo.de/", {:imageOnly => false, :withIframes => true})
+ dom = client.get("http://foo.de/", {:imageOnly => false, :withIframes => true}, "hmac_key")
 
  or in the bash 
 
- phantom_client http://foo.de/ [proxy_ip:port []]
+ phantom_client http://foo.de/ [proxy_ip:port []] [-hmac key]
+ 
+== Features
+ Supports an security algorithm which if activated on the server has to supplied by the client otherwise the request is denied
 
 == TODO
 * nicer API
