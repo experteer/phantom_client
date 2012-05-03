@@ -16,7 +16,7 @@ module PhantomJSProxy
     attr_accessor :hmac
     attr_accessor :hmac_activated
 		
-		def initialize(addr_list=[], con = PhantomJSClientConnection.new, key=nil)
+		def initialize(addr_list=[], key=nil, con = PhantomJSClientConnection.new)
 			@proxy_list = addr_list
 			@connection = con
 			@hmac_activated = key ? true : false
@@ -47,10 +47,7 @@ module PhantomJSProxy
 			end
 			
 			if hmac_activated
-			  t = Time.now
-			  req['Hmac-Key'] = hmac.update(addr+t.to_s).hexdigest
-			  req['Hmac-Time'] = t
-        puts "Encode: #{addr} to #{req['Hmac-Key']}"
+			  update_hmac_head addr, req, hmac
 			end
 			#::Proxy(@proxy_addr, @proxy_port)
 			
@@ -61,6 +58,14 @@ module PhantomJSProxy
 			#	return "Could not connect to proxy"
 			#end
       do_get(url, req, 10)
+		end
+		
+		private
+		def update_hmac_head(addr, req, hmac_keygen)
+		  t = Time.now
+      req['Hmac-Key'] = hmac_keygen.update(addr+t.to_s).hexdigest
+      req['Hmac-Time'] = t
+      puts "Encode: #{addr} to #{req['Hmac-Key']}"
 		end
     
     def do_get(url, req, count)

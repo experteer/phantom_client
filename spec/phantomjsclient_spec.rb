@@ -4,7 +4,7 @@ require 'lib/phantom_client/phantom_client'
 require 'DummyConnection'
 describe PhantomJSProxy::PhantomJSClient do
 	before do
-		@client = PhantomJSProxy::PhantomJSClient.new([{:addr => "127.0.0.1", :port => 5000}], DummyConnection.new)
+		@client = PhantomJSProxy::PhantomJSClient.new([{:addr => "127.0.0.1", :port => 5000}], nil, DummyConnection.new)
 	end
 	
 	it "should have proxy config" do
