@@ -7,6 +7,20 @@ module PhantomJSProxy
     attr_accessor :body
     attr_accessor :code
   end
+  class DummyLogger
+    def info msg
+      puts msg
+    end
+    
+    def warn msg
+      puts msg
+    end
+    
+    def error msg
+      purs msg
+    end
+  end
+
 	class PhantomJSClient
 	
 		attr_accessor :proxy_addr
@@ -15,13 +29,18 @@ module PhantomJSProxy
 		attr_accessor :connection
     attr_accessor :hmac
     attr_accessor :hmac_activated
+    attr_accessor :logger
 		
-		def initialize(addr_list=[], key=nil, con = PhantomJSClientConnection.new)
+		def initialize(addr_list=[], key=nil, log=nil, con = PhantomJSClientConnection.new)
 			@proxy_list = addr_list
 			@connection = con
 			@hmac_activated = key ? true : false
 			@hmac = HMAC::MD5.new key
-			puts "Using #{key} as HMAC key"
+			@logger = log
+			if @logger == nil
+			  @logger = DummyLogger.new
+			end
+			logger.info "Using #{key} as HMAC key"
 		end
 		
 		def get_body(addr, options=nil)
@@ -38,12 +57,12 @@ module PhantomJSProxy
 			
 			if options && options['imageOnly']
 				req['Get-Page-As-Image'] = options['imageOnly']
-				puts "Do image only"
+				logger.info "Do image only"
 			end
 			
 			if options && options['withIframes']
 				req['Get-Page-With-IFrames'] = options['withIframes']
-				puts "Do fetch iframes"
+				logger.info "Do fetch iframes"
 			end
 			
 			if hmac_activated
@@ -65,15 +84,15 @@ module PhantomJSProxy
 		  t = Time.now
       req['Hmac-Key'] = hmac_keygen.update(addr+t.to_s).hexdigest
       req['Hmac-Time'] = t
-      puts "Encode: #{addr} to #{req['Hmac-Key']}"
+      logger.info "Encode: #{addr} to #{req['Hmac-Key']}"
 		end
     
     def do_get(url, req, count)
         element = get_proxy()	
         if element[:addr] && element[:port]
-          puts "try: "+element[:addr]+", "+element[:port]
+          logger.info "try: "+element[:addr]+", "+element[:port]
         else
-          puts "DUMMY TRY"
+          logger.info "DUMMY TRY"
         end
         
         begin
