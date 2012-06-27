@@ -99,6 +99,7 @@ module PhantomJSProxy
           @connection.do_request(element, url, req)
         rescue
           if count == 0
+            raise NoProxy, "Could not reach any Proxy"
             resp = DummyResponse.new()
             resp.code = 500
             resp.body ="Could not connect to proxy"
