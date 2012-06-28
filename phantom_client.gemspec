@@ -3,7 +3,7 @@ require 'rake'
 
 Gem::Specification.new do |s|
   s.name        = 'phantom_client'
-  s.version     = '1.2.2'
+  s.version     = '1.2.3'
   s.summary     = "This is a phantomjs Proxy client"
   s.description = "This is a phantomjs Proxy client"
   s.authors     = ["Daniel Sudmann"]
