@@ -26,4 +26,4 @@ if url == nil
 end
 
 client = PhantomJSProxy::PhantomJSClient.new(proxy_list, hmac_key, nil, PhantomJSProxy::PhantomJSClientConnection.new)
-puts client.get_body(url, {:imageOnly => false, :withIframes => true})
+puts client.get_body(url, {"imageOnly" => false, "withIframes" => true})
