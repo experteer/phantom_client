@@ -1,6 +1,7 @@
 require 'net/http'
 require 'uri'
 require 'hmac-md5'
+require "base64"
 
 module PhantomJSProxy
   class DummyResponse
@@ -47,13 +48,8 @@ module PhantomJSProxy
 		  get(addr, options).body
 		end
 		
-		def get(addr, options=nil)			
-			url = URI.parse(addr)
-			req = Net::HTTP::Get.new(url.path)
-			req['User-Agent'] = "PhantomJSClient"
-			if /\?/.match(addr)
-				req.body = addr.split('?')[1]
-			end
+		def get(addr_in, options=nil)		
+			addr,url, req = generate_request(addr_in)
 			
 			if options && options['imageOnly']
 				req['Get-Page-As-Image'] = options['imageOnly']
@@ -86,7 +82,25 @@ module PhantomJSProxy
       req['Hmac-Time'] = t
       logger.info "Encode: #{addr} to #{req['Hmac-Key']}"
 		end
-    
+
+		def generate_request(addr)
+			begin	
+				url = URI.parse(addr)
+				req = Net::HTTP::Get.new(url.path)
+				req['User-Agent'] = "PhantomJSClient"
+				req.body = url.query
+				return addr, url, req
+			rescue URI::InvalidURIError
+				#this now means we got a bad url
+				addr = "http://phantomProxy.get/"
+				url = URI.parse(addr)
+				req = Net::HTTP::Get.new(url.path)
+				req['User-Agent'] = "PhantomJSClient"
+				req.body = "address="+Base64.encode64(addr)
+				return addr, url, req
+			end
+		end
+
     def do_get(url, req, count)
         element = get_proxy()	
         if element[:addr] && element[:port]
