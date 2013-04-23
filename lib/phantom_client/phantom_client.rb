@@ -92,12 +92,12 @@ module PhantomJSProxy
 				return addr, url, req
 			rescue URI::InvalidURIError
 				#this now means we got a bad url
-				addr = "http://phantomProxy.get/"
-				url = URI.parse(addr)
+				addr_out = "http://phantomProxy.get/"
+				url = URI.parse(addr_out)
 				req = Net::HTTP::Get.new(url.path)
 				req['User-Agent'] = "PhantomJSClient"
 				req.body = "address="+Base64.encode64(addr)
-				return addr, url, req
+				return addr_out, url, req
 			end
 		end
 
