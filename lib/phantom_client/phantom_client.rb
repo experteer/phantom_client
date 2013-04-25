@@ -111,9 +111,15 @@ module PhantomJSProxy
         
         begin
           @connection.do_request(element, url, req)
-        rescue Exception => e
+        rescue Net::HTTPBadResponse => e
+          raise ProxyErrorLoadingPage, "Proxy could not load Page: #{e}"
+          resp = DummyResponse.new()
+          resp.code = 500
+          resp.body = "Bad Server response"
+          return resp
+        rescue Timeout::Error, Errno::ECONNREFUSED => e
           if count == 0
-            raise NoProxy, "Could not reach any Proxy"
+            raise NoProxy, "Could not reach any Proxy: #{e}"
             resp = DummyResponse.new()
             resp.code = 500
             resp.body ="Could not connect to proxy"
